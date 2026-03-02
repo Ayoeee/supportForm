@@ -43,14 +43,6 @@ class DashboardPage extends BasePage {
     await this.issueTypeDropdown.fill('Bug')
     await this.issueTypeDropdown.press('Enter')
 
-    //For upload in debug
-    // const filePath = path.resolve(
-    //   __dirname,
-    //   '../../tests/fixtures/test-image.jpeg',
-    // )
-
-    // await this.uploadIcon.setInputFiles(filePath)
-
     await this.whatWeCanHelpWithInputField.fill(
       'This is an automated test issue description - testing text without upload, please ignore ⚠️ © Ayo.',
     )
