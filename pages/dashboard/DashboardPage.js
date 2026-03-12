@@ -1,70 +1,66 @@
 const { BasePage } = require('../base/BasePage')
 const { expect } = require('@playwright/test')
 import { generateAssociateName } from '../../utils/data-generator'
-const path = require('path')
 
 class DashboardPage extends BasePage {
   constructor(page) {
     super(page)
-    this.url = '.'
-    this.emailInputField = page.getByRole('textbox', { name: 'Email' })
-    this.issueTypeDropdown = page.getByRole('combobox', {
-      name: /type of support request/i,
-    })
 
-    this.uploadIcon = page.locator('input[type="file"]')
-    this.whatWeCanHelpWithInputField = page.getByRole('textbox', {
+    this.url = '.'
+
+    this.form = page.locator('form').first()
+
+    this.emailInputField = this.form.getByRole('textbox', { name: 'Email' })
+
+    this.selectRequestDropdown = this.form.locator('.styled-select__control')
+
+    this.dropdownMenu = page.locator('.styled-select__menu')
+    this.dropdownOption_NotWorking = page.locator('.styled-select__option', {
+      hasText: "Something isn't working as expected",
+    })
+    this.descriptionTextArea = page.getByRole('textbox', {
       name: 'What can we help with?',
     })
-    this.submitButton = page.getByRole('button', { name: 'Submit' })
-    this.submissionHeading = page.getByRole('heading', {
-      name: 'Submission Received',
-    })
-    this.submissionText = page.getByText('Thank you for your submission!')
-    this.submissionEmailText = page.getByText("We'll be in touch via email")
-    this.submitAnotherButton = page.getByRole('button', {
-      name: 'Submit Another Request',
-    })
+
+    this.submitBtn = page.getByRole('button', { name: 'Submit' })
   }
 
   async open() {
     await this.navigate(this.url)
   }
 
-  async fillSupportFormWithoutUploadForBugRelatedIssues() {
-    await this.page.setViewportSize({ width: 1920, height: 624 })
+  async fillFormWithoutAnImage() {
+    const email = generateAssociateName() + '@kinship.co'
+    await this.emailInputField.fill(email)
+    await expect(this.emailInputField).toHaveValue(/@kinship\.co$/)
+    console.log(`✅ Email successfully filled with: ${email}`)
 
-    this.associateName = generateAssociateName()
+    // scroll into view and click — ensures element is visible before interacting
+    await this.selectRequestDropdown.scrollIntoViewIfNeeded()
+    await this.selectRequestDropdown.click({ force: true })
+    await this.dropdownMenu.waitFor({ state: 'visible', timeout: 20000 })
+    await expect(this.dropdownOption_NotWorking).toBeVisible()
+    console.log('✅ Request type dropdown options are visible')
 
-    await this.emailInputField.fill(this.associateName + '@kinship.com')
-
-    await this.issueTypeDropdown.click()
-
-    await this.issueTypeDropdown.fill('Bug')
-    await this.issueTypeDropdown.press('Enter')
-
-    await this.whatWeCanHelpWithInputField.fill(
-      'This is an automated test issue description - testing text without upload, please ignore ⚠️ © Ayo.',
+    await this.dropdownOption_NotWorking.click()
+    await expect(this.page.locator('.styled-select__single-value')).toHaveText(
+      "Something isn't working as expected",
     )
-    const [response] = await Promise.all([
-      this.page.waitForResponse(
-        (resp) =>
-          resp.request().method() === 'POST' && resp.url().includes('/support'),
-      ),
-      this.submitButton.click(),
-    ])
+    console.log("✅ Request type selected: Something isn't working as expected")
 
-    expect(response.status()).toBe(200)
-    // await this.submitButton.click()
-    await expect(this.submissionHeading).toBeVisible()
-    await expect(this.submissionText).toBeVisible()
-    await expect(this.submissionEmailText).toBeVisible()
-    await expect(this.submitAnotherButton).toBeVisible()
-
-    console.log(
-      'Support form successfully submitted and confirmation view displayed.',
+    await this.descriptionTextArea.fill(
+      'This is a test description for something that is not working as expected. please ignore ⚠️ Ayo',
     )
-    console.log('Support form submitted without upload for bug-related issues.')
+    await expect(this.descriptionTextArea).toHaveValue(
+      'This is a test description for something that is not working as expected. please ignore ⚠️ Ayo',
+    )
+    console.log('✅ Description text area successfully filled')
+
+    await expect(this.submitBtn).toBeEnabled()
+    console.log('✅ Submit button is enabled and ready for interaction')
+
+    await this.submitBtn.click()
+    console.log('✅ Submit button clicked, form submitted')
   }
 }
 

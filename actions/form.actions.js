@@ -10,7 +10,7 @@ class FormActions {
 
   async fillSupportFormWithoutUploadForBugRelatedIssues() {
     await this.dashboardPage.open()
-    await this.dashboardPage.fillSupportFormWithoutUploadForBugRelatedIssues()
+    await this.dashboardPage.fillFormWithoutAnImage()
   }
 }
 
