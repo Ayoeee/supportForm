@@ -31,7 +31,6 @@ class DashboardPage extends BasePage {
   }
 
   async fillFormWithoutAnImage() {
-    await this.open()
     await this.page.waitForLoadState('networkidle')
 
     // dynamic email
