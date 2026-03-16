@@ -56,11 +56,14 @@ class DashboardPage extends BasePage {
     await this.submitBtn.scrollIntoViewIfNeeded()
     await expect(this.submitBtn).toBeEnabled()
     await this.submitBtn.click()
+  }
 
+  async assertFormSubmition() {
     // success validation
     await expect(this.successMessage).toBeVisible({ timeout: 10000 })
     await expect(this.successText).toBeVisible()
     await expect(this.submitAnotherBtn).toBeVisible()
+    console.log('User has filled complaint form successfully')
   }
 }
 

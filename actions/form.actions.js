@@ -11,6 +11,7 @@ class FormActions {
   async fillSupportFormWithoutUploadForBugRelatedIssues() {
     await this.dashboardPage.open()
     await this.dashboardPage.fillFormWithoutAnImage()
+    await this.dashboardPage.assertFormSubmition()
   }
 }
 
