@@ -11,3 +11,9 @@ test('Associates can fill support form with I have A Question Topic', async ({
 }) => {
   await fillSupportFormFlow.fillFormWithIhaveAQuestion()
 })
+
+test('Associates can fill support form with I have A Feedback Topic', async ({
+  fillSupportFormFlow,
+}) => {
+  await fillSupportFormFlow.fillFormWithIhaveFeedback()
+})

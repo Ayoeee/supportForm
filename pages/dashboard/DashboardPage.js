@@ -22,6 +22,10 @@ class DashboardPage extends BasePage {
       name: 'I have a question',
     })
 
+    this.iHaveFeedbackDropdown = page.getByRole('option', {
+      name: 'I have feedback',
+    })
+
     this.dropdown = this.descriptionField = page.getByRole('textbox', {
       name: 'What can we help with?',
     })
@@ -65,7 +69,7 @@ class DashboardPage extends BasePage {
     await this.submitBtn.click()
   }
 
-  async assertFormSubmition() {
+  async assertFormSubmitionForSomethingIsNotExpected() {
     // success validation
     await expect(this.successMessage).toBeVisible({ timeout: 10000 })
     await expect(this.successText).toBeVisible()
@@ -91,7 +95,7 @@ class DashboardPage extends BasePage {
 
     // description text
     const descriptionText =
-      "⚠️ This is an automated test for the 'I have a new question' dropdown implemented, please ignore⚠️ - Ayo"
+      "⚠️ This is an automated test for the 'I have a question' dropdown implemented, please ignore⚠️ - Ayo"
     await this.descriptionField.fill(descriptionText)
     await expect(this.descriptionField).toHaveValue(descriptionText)
 
@@ -108,6 +112,42 @@ class DashboardPage extends BasePage {
     await expect(this.submitAnotherBtn).toBeVisible()
     console.log(
       'User has filled complaint form successfully using the I have a question topic',
+    )
+  }
+
+  async fillFormWithIhaveFeedback() {
+    await this.page.waitForLoadState('networkidle')
+
+    // dynamic email
+    const email = `${generateAssociateName()}@kinship.co`
+    await this.emailField.fill(email)
+    await expect(this.emailField).toHaveValue(email)
+
+    // open dropdown
+    await this.dropdownTrigger.scrollIntoViewIfNeeded()
+    await this.dropdownTrigger.focus()
+    await this.dropdownTrigger.click({ force: true })
+    await this.iHaveFeedbackDropdown.click()
+
+    // description text
+    const descriptionText =
+      "⚠️ This is an automated test for the 'I have a feedback' dropdown implemented, please ignore⚠️ - Ayo"
+    await this.descriptionField.fill(descriptionText)
+    await expect(this.descriptionField).toHaveValue(descriptionText)
+
+    // submit
+    await this.submitBtn.scrollIntoViewIfNeeded()
+    await expect(this.submitBtn).toBeEnabled()
+    await this.submitBtn.click()
+  }
+
+  async assertFormSubmitionForIhaveFeedback() {
+    // success validation
+    await expect(this.successMessage).toBeVisible({ timeout: 10000 })
+    await expect(this.successText).toBeVisible()
+    await expect(this.submitAnotherBtn).toBeVisible()
+    console.log(
+      'User has filled complaint form successfully using the I have a feedback topic',
     )
   }
 }

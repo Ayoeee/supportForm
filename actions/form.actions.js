@@ -11,13 +11,19 @@ class FormActions {
   async fillFormWithSomethingIsNotExpected() {
     await this.dashboardPage.open()
     await this.dashboardPage.fillFormWithSomethingIsNotExpected()
-    await this.dashboardPage.assertFormSubmition()
+    await this.dashboardPage.assertFormSubmitionForSomethingIsNotExpected()
   }
 
   async fillFormWithIhaveAQuestion() {
     await this.dashboardPage.open()
     await this.dashboardPage.fillFormWithIhaveAQuestion()
     await this.dashboardPage.assertFormSubmitionForIhaveAQuestion()
+  }
+
+  async fillFormWithIhaveFeedback() {
+    await this.dashboardPage.open()
+    await this.dashboardPage.fillFormWithIhaveFeedback()
+    await this.dashboardPage.assertFormSubmitionForIhaveFeedback()
   }
 }
 
