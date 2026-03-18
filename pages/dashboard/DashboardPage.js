@@ -55,7 +55,7 @@ class DashboardPage extends BasePage {
 
     // description text
     const descriptionText =
-      '⚠️ This is an automated test for the something is not working dropdown implemented, please ignore⚠️ - Ayo'
+      "⚠️ This is an automated test for the 'Something is not working' dropdown implemented, please ignore⚠️ - Ayo"
     await this.descriptionField.fill(descriptionText)
     await expect(this.descriptionField).toHaveValue(descriptionText)
 
@@ -91,7 +91,7 @@ class DashboardPage extends BasePage {
 
     // description text
     const descriptionText =
-      '⚠️ This is an automated test for the i have a new question dropdown implemented, please ignore⚠️ - Ayo'
+      "⚠️ This is an automated test for the 'I have a new question' dropdown implemented, please ignore⚠️ - Ayo"
     await this.descriptionField.fill(descriptionText)
     await expect(this.descriptionField).toHaveValue(descriptionText)
 
