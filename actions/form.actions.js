@@ -8,10 +8,16 @@ class FormActions {
     this.dashboardPage = new DashboardPage(page)
   }
 
-  async fillSupportFormWithoutUploadForBugRelatedIssues() {
+  async fillFormWithSomethingIsNotExpected() {
     await this.dashboardPage.open()
-    await this.dashboardPage.fillFormWithoutAnImage()
+    await this.dashboardPage.fillFormWithSomethingIsNotExpected()
     await this.dashboardPage.assertFormSubmition()
+  }
+
+  async fillFormWithIhaveAQuestion() {
+    await this.dashboardPage.open()
+    await this.dashboardPage.fillFormWithIhaveAQuestion()
+    await this.dashboardPage.assertFormSubmitionForIhaveAQuestion()
   }
 }
 
